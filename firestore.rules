@@ -1,0 +1,29 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Global Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isValidRecipe(data) {
+      return data.title is string && data.title.size() <= 100 &&
+             data.ingredients is list && data.ingredients.size() <= 50 &&
+             data.instructions is string && data.instructions.size() <= 2000 &&
+             data.category in ['Breakfast', 'Lunch', 'Supper', 'Brunch'];
+    }
+
+    match /recipes/{recipeId} {
+      // Allow anyone to read recipes to browse the digital cookbook
+      allow read: if true;
+      
+      // Allow public creation/update/delete since auth was removed per user request
+      allow write: if isValidRecipe(request.resource.data || resource.data);
+    }
+  }
+}

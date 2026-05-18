@@ -1,0 +1,6 @@
+{
+  "name": "The Global Kitchen",
+  "description": "A digital Cameroonian cookbook by YOH PRECIOUS, featuring AI-powered recipe generation and traditional meal discovery.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
